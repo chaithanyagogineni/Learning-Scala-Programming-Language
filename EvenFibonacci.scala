@@ -1,26 +1,34 @@
-//Sum of even valued terms in a fibonacci series with start value as 1
+//Problem 2 in project euler
+//implemented in scala
 
-//Scala Solution
 
-//Function to get the fibonacci series of number
-def getFibonacci(number:Int):Int={
-  if(number==1)
-    1
-  else if(number==2)
-    2
+import scala.util.control.Breaks._
+
+//function to get fibonacci series of nth number
+def getFibonacci(first:Int,second:Int,index:Int):Int={
+  if(index==0)
+    first
+  else if(index==1)
+    second
   else
-    getFibonacci(number-1)+getFibonacci(number-2)
-}
-//function to compute the sum of fibonacci series
-def getSum(number:Int):Int={
-  def helper(number:Int,sum:Int):Int={
-    if(getFibonacci(number)>=4000000)
-      sum
-    else if(getFibonacci(number)%2==0)
-      helper(number+1,sum+getFibonacci(number))
-    else
-      helper(number+1,sum)
+  {
+    getFibonacci(first,second,index-1)+getFibonacci(first,second,index-2)
   }
-  helper(number,0)
+
 }
-getSum(1)
+//Get the fibonacci series until 4000000
+var list_of_fibonacci:List[Int] = List()
+breakable {
+  for (i <- 0 to 1000) {
+    if (getFibonacci(0, 1, i) >= 4000000)
+      break
+    list_of_fibonacci = list_of_fibonacci :+ (getFibonacci(0, 1, i))
+  }
+}
+//filter the list to contain only even numbers
+val list_of_fibonacci_even=list_of_fibonacci.filter(_%2==0)
+//compute the sum of numbers in list
+println(list_of_fibonacci_even.sum)
+
+
+
